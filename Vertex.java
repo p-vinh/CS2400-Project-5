@@ -2,7 +2,6 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class Vertex<T> implements VertexInterface<T> {
-    // 1099
     private T label;
     private ListWithIteratorInterface<Edge> edgeList;
     private boolean visited; // True if visited
@@ -18,21 +17,19 @@ public class Vertex<T> implements VertexInterface<T> {
     }
 
     public T getLabel() {
-
-        return null;
+        return label;
     }
 
     public void visit() {
-
+        visited = true;
     }
 
     public void unvisit() {
-
+        visited = false;
     }
 
     public boolean isVisited() {
-
-        return false;
+        return visited;
     }
 
     public boolean connect(VertexInterface<T> endVertex, double edgeWeight) {
@@ -58,45 +55,60 @@ public class Vertex<T> implements VertexInterface<T> {
     }
 
     public Iterator<VertexInterface<T>> getNeighborIterator() {
-
         return new NeighborIterator();
     }
 
     public Iterator<Double> getWeightIterator() {
-
-        return null;
+        return new WeightIterator();
     }
 
     public boolean hasNeighbor() {
-
-        return false;
-    }
-
-    public VertexInterface<T> getUnvisitedNeighbor() {
         return !edgeList.isEmpty();
     }
 
-    public void setPredecessor(VertexInterface<T> predecessor) {
+    public VertexInterface<T> getUnvisitedNeighbor() {
+        VertexInterface<T> result = null;
+        Iterator<VertexInterface<T>> neighbors = getNeighborIterator();
 
+        while (neighbors.hasNext() && (result == null)) {
+            VertexInterface<T> nextNeighbor = neighbors.next();
+            if (!nextNeighbor.isVisited())
+                result = nextNeighbor;
+        }
+        return result;
+    }
+
+    public void setPredecessor(VertexInterface<T> predecessor) {
+        previousVertex = predecessor;
     }
 
     public VertexInterface<T> getPredecessor() {
-
-        return null;
+        return previousVertex;
     }
 
     public boolean hasPredecessor() {
-
-        return false;
+        return previousVertex != null;
     }
 
     public void setCost(double newCost) {
-
+        cost = newCost;
     }
 
     public double getCost() {
+        return cost;
+    }
 
-        return 0;
+    @Override
+    public boolean equals(Object other) {
+        boolean result;
+        if ((other == null) || (getClass() != other.getClass()))
+            result = false;
+        else {
+            @SuppressWarnings("unchecked")
+            Vertex<T> otherVertex = (Vertex<T>) other;
+            result = label.equals(otherVertex.label);
+        }
+        return result;
     }
 
     protected class Edge {
@@ -136,11 +148,34 @@ public class Vertex<T> implements VertexInterface<T> {
         public VertexInterface<T> next() {
             VertexInterface<T> nextNeighbor = null;
             if (edges.hasNext()) {
-                Edge edgeToNextNeighbor = edges.next();
-                nextNeighbor = edgeToNextNeighbor.getEndVertex();
+                nextNeighbor = edges.next().getEndVertex();
             } else
                 throw new NoSuchElementException();
             return nextNeighbor;
+        }
+
+        public void remove() {
+            throw new UnsupportedOperationException();
+        }
+    }
+    private class WeightIterator implements Iterator<Double> {
+        private Iterator<Edge> edges;
+
+        private WeightIterator() {
+            edges = edgeList.getIterator();
+        }
+
+        public boolean hasNext() {
+            return edges.hasNext();
+        }
+
+        public Double next() {
+            double nextNeighborWeight;
+            if (edges.hasNext()) {
+                nextNeighborWeight = edges.next().getWeight();
+            } else
+                throw new NoSuchElementException();
+            return nextNeighborWeight;
         }
 
         public void remove() {
