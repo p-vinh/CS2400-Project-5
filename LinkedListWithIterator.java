@@ -184,6 +184,7 @@ public class LinkedListWithIterator<T> implements ListWithIteratorInterface<T> {
     // Returns a reference to the node at a given position.
     // Precondition: The chain is not empty;
     // 1 <= givenPosition <= numberOfEntries.
+
     private Node getNodeAt(int givenPosition) {
         // Assertion: (firstNode != null) &&
         // (1 <= givenPosition) && (givenPosition <= numberOfEntries)
@@ -195,19 +196,4 @@ public class LinkedListWithIterator<T> implements ListWithIteratorInterface<T> {
         // Assertion: currentNode != null
         return currentNode;
     } // end getNodeAt
-
-    private Node getReferenceTo(T anEntry) {
-        boolean found = false;
-        Node currentNode = firstNode;
-
-        while (!found && (currentNode != null)) {
-            if (anEntry.equals(currentNode.data))
-                found = true;
-            else
-                currentNode = currentNode.next;
-        }
-
-        return currentNode;
-    }
-
 }
