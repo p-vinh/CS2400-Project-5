@@ -1,6 +1,7 @@
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Iterator;
+
 public class MapDictionary<K, V> implements DictionaryInterface<K, V> {
 	private Map<K, V> map;
 
@@ -29,7 +30,7 @@ public class MapDictionary<K, V> implements DictionaryInterface<K, V> {
 	}
 
 	public Iterator<V> getValueIterator() {
-		throw new UnsupportedOperationException("getValueIterator");
+		return new ValueIterator<>();
 	}
 
 	public boolean isEmpty() {
@@ -44,10 +45,10 @@ public class MapDictionary<K, V> implements DictionaryInterface<K, V> {
 		map.clear();
 	}
 
-	public class KeyIterator<T> implements Iterator<K> {
+	private class KeyIterator<T> implements Iterator<K> {
 		private Iterator<K> iterator;
 
-		public KeyIterator() {
+		private KeyIterator() {
 			iterator = map.keySet().iterator();
 		}
 
@@ -56,6 +57,22 @@ public class MapDictionary<K, V> implements DictionaryInterface<K, V> {
 		}
 
 		public K next() {
+			return iterator.next();
+		}
+	}
+
+	private class ValueIterator<T> implements Iterator<V> {
+		private Iterator<V> iterator;
+
+		private ValueIterator() {
+			iterator = map.values().iterator();
+		}
+
+		public boolean hasNext() {
+			return iterator.hasNext();
+		}
+
+		public V next() {
 			return iterator.next();
 		}
 	}

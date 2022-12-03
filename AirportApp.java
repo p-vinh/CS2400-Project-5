@@ -7,11 +7,10 @@ public class AirportApp {
 	public static void main(String[] args) {
 
 		// Objects
-		File distance = new File("./distances.csv");
 		Scanner scan = new Scanner(System.in);
 		DictionaryInterface<String, String[]> dict = new MapDictionary<>();
+		GraphInterface<String> graph = new DirectedGraph<>();
 		String[] command;
-
 
 		printMenu();
 
@@ -22,22 +21,28 @@ public class AirportApp {
 
 			if (command[0].equals("E")) {
 				break;
-			}
+			} 
 			else if (command[0].equals("H")) {
 				String[] temp;
 				try {
-					Scanner read = new Scanner(new File("./airports.csv"));
+					Scanner readAirport = new Scanner(new File("./airports.csv"));
+					Scanner readDist = new Scanner(new File("./distances.csv"));
 
-					while (read.hasNextLine()) {
-						temp = read.nextLine().split(",");
+					while (readAirport.hasNextLine()) {
+						temp = readAirport.nextLine().split(",");
 						dict.add(temp[0], temp);
+						graph.addVertex(temp[0]);
+					}
 
-						// input distance data into vertices
+					while (readDist.hasNextLine()) {
+						temp = readDist.nextLine().split(",");
+						graph.addEdge(temp[0], temp[1], Double.parseDouble(temp[2]));
 					}
 				} catch (FileNotFoundException fe) {
 					fe.printStackTrace();
 				}
-			} else if (command[0].equals("Q")) {
+			} 
+			else if (command[0].equals("Q")) {
 				for (int i = 1; i < command.length; i++) {
 					System.out.print(command[i] + " - ");
 
@@ -52,7 +57,11 @@ public class AirportApp {
 					}
 					System.out.println();
 				}
-			} else {
+			} 
+			else if (command[0].equals("D")) {
+				System.out.println(graph.getShortestPath(command[1], command[2], new LinkedStack<>()));
+			} 
+			else {
 
 				System.out.println();
 				System.out.println("Invalid Command");
