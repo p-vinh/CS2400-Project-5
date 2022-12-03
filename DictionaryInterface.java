@@ -1,5 +1,5 @@
 import java.util.Iterator;
-public interface InterfaceDictionary<K, V> {
+public interface DictionaryInterface<K, V> {
     /**
      * Adds a new entry to this dictionary. If the given search key already
      * exists in the dictionary, replaces the corresponding value.

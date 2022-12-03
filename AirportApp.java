@@ -9,7 +9,7 @@ public class AirportApp {
 		// Objects
 		File distance = new File("./distances.csv");
 		Scanner scan = new Scanner(System.in);
-		InterfaceDictionary<String, String[]> dict = new MapDictionary<>();
+		DictionaryInterface<String, String[]> dict = new MapDictionary<>();
 		String[] command;
 
 

@@ -1,95 +1,140 @@
-public class DirectedGraph implements GraphInterface<VertexInterface<String>> {
+import java.util.Iterator;
 
+// Why cant i just do implements BasicGraphInterface<T>, GraphAlgorithmsInterface<T>
+public class DirectedGraph<T> implements GraphInterface<T> {
+    private DictionaryInterface<T, VertexInterface<T>> vertices;
+    private int edgeCount;
+
+    public DirectedGraph() {
+        vertices = new MapDictionary<>();
+        edgeCount = 0;
+    }
+
+    public boolean addVertex(T vertexLabel) {
+        VertexInterface<T> addOutcome = vertices.add(vertexLabel, new Vertex<>(vertexLabel));
+        return addOutcome == null;
+    }
+
+    public boolean addEdge(T begin, T end, double edgeWeight) {
+        boolean result = false;
+        VertexInterface<T> beginVertex = vertices.getValue(begin);
+        VertexInterface<T> endVertex = vertices.getValue(end);
+
+        if ((beginVertex != null) && (endVertex != null)) {
+            result = beginVertex.connect(endVertex, edgeWeight);
+        }
+        if (result)
+            edgeCount++;
+        return result;
+    }
+
+    public boolean addEdge(T begin, T end) {
+        return addEdge(begin, end, 0);
+    }
+
+    public boolean hasEdge(T begin, T end) {
+        boolean found = false;
+        VertexInterface<T> beginVertex = vertices.getValue(begin);
+        VertexInterface<T> endVertex = vertices.getValue(end);
+
+        if ((beginVertex != null) && (endVertex != null)) {
+            Iterator<VertexInterface<T>> neighbors = beginVertex.getNeighborIterator();
+
+            while (!found && neighbors.hasNext()) {
+                if (endVertex.equals(neighbors.next())) {
+                    found = true;
+                }
+            }
+        }
+        return found;
+    }
 
     public boolean isEmpty() {
-
-        return false;
+        return vertices.isEmpty();
     }
-
-
 
     public int getNumberOfVertices() {
-
-        return 0;
+        return vertices.getSize();
     }
-
-
 
     public int getNumberOfEdges() {
-
-        return 0;
+        return edgeCount;
     }
-
-
 
     public void clear() {
-
-        
+        vertices.clear();
+        edgeCount = 0;
     }
 
-    public boolean addVertex(VertexInterface<String> vertexLabel) {
-
-        return false;
+    protected void resetVertices() {
+        Iterator<VertexInterface<T>> vertexIterator = vertices.getValueIterator();
+        while (vertexIterator.hasNext()) {
+            VertexInterface<T> nextVertex = vertexIterator.next();
+            nextVertex.unvisit();
+            nextVertex.setCost(0);
+            nextVertex.setPredecessor(null);
+        }
     }
 
-
-
-    public boolean addEdge(VertexInterface<String> begin, VertexInterface<String> end, double edgeWeight) {
-
-        return false;
-    }
-
-
-
-    public boolean addEdge(VertexInterface<String> begin, VertexInterface<String> end) {
-
-        return false;
-    }
-
-
-
-    public boolean hasEdge(VertexInterface<String> begin, VertexInterface<String> end) {
-
-        return false;
-    }
-
-
-
-    public QueueInterface<VertexInterface<String>> getBreadthFirstTraversal(VertexInterface<String> origin) {
+    public QueueInterface<T> getBreadthFirstTraversal(T origin) {
 
         return null;
     }
 
-
-    public QueueInterface<VertexInterface<String>> getDepthFirstTraversal(VertexInterface<String> origin) {
-
-        return null;
-    }
-
-    public StackInterface<VertexInterface<String>> getTopologicalOrder() {
+    public QueueInterface<T> getDepthFirstTraversal(T origin) {
 
         return null;
     }
 
+    public StackInterface<T> getTopologicalOrder() {
 
-    public int getShortestPath(VertexInterface<String> begin, VertexInterface<String> end,
-            StackInterface<VertexInterface<String>> path) {
+        throw new UnsupportedOperationException("getTopologicalOrder() is unsupported for this implementation");
+    }
+
+    public int getShortestPath(T originVertex, T endVertex, StackInterface<T> path) {
+        resetVertices();
+        boolean done = false;
+        QueueInterface<VertexInterface<T>> vertexQueue = new LinkedQueue<>();
+        VertexInterface<T> orginVert = vertices.getValue(originVertex);
+        VertexInterface<T> endVert = vertices.getValue(endVertex);
+
+        orginVert.visit();
+        vertexQueue.enqueue(orginVert);
+
+        while(!done && !vertexQueue.isEmpty()) {
+            VertexInterface<T> frontVertex = vertexQueue.dequeue();
+            Iterator<VertexInterface<T>> neighborIterator = frontVertex.getNeighborIterator();
+            while (!done && neighborIterator.hasNext()) {
+                VertexInterface<T> nextNeighbor = neighborIterator.next();
+
+                if (!nextNeighbor.isVisited()) {
+                    nextNeighbor.visit();
+                    nextNeighbor.setCost(1 + frontVertex.getCost());
+                    nextNeighbor.setPredecessor(frontVertex);
+                    vertexQueue.enqueue(nextNeighbor);
+                }
+                if (nextNeighbor.equals(endVert)) {
+                    done = true;
+                }
+            }
+        }
+
+        // Traversal ends; construct shortest path
+        int pathLength = (int)endVert.getCost();
+        path.push(endVert.getLabel());
+        VertexInterface<T> vertex = endVert;
+
+        while (vertex.hasPredecessor()) {
+            vertex = vertex.getPredecessor();
+            path.push(vertex.getLabel());
+        }
+
+        return pathLength;
+    }
+
+    public double getCheapestPath(T begin, T end, StackInterface<T> path) {
 
         return 0;
     }
 
-
-    public double getCheapestPath(VertexInterface<String> begin, VertexInterface<String> end,
-            StackInterface<VertexInterface<String>> path) {
-
-        return 0;
-    }
-
-
-
-
-
-
-
-    
 }

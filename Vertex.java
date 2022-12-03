@@ -34,6 +34,7 @@ public class Vertex<T> implements VertexInterface<T> {
 
     public boolean connect(VertexInterface<T> endVertex, double edgeWeight) {
         boolean result = false;
+        
         if (!this.equals(endVertex)) { // Vertices are distinct
             Iterator<VertexInterface<T>> neighbors = getNeighborIterator();
             boolean duplicateEdge = false;

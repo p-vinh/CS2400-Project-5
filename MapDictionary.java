@@ -1,7 +1,7 @@
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Iterator;
-public class MapDictionary<K, V> implements InterfaceDictionary<K, V> {
+public class MapDictionary<K, V> implements DictionaryInterface<K, V> {
 	private Map<K, V> map;
 
 	public MapDictionary() {
