@@ -77,17 +77,14 @@ public class DirectedGraph<T> implements GraphInterface<T> {
     }
 
     public QueueInterface<T> getBreadthFirstTraversal(T origin) {
-
-        return null;
+        throw new UnsupportedOperationException("getBreadthFirstTraversal() is unsupported for this implementation");
     }
 
     public QueueInterface<T> getDepthFirstTraversal(T origin) {
-
-        return null;
+        throw new UnsupportedOperationException("getDepthFirstTraversal() is unsupported for this implementation");
     }
 
     public StackInterface<T> getTopologicalOrder() {
-
         throw new UnsupportedOperationException("getTopologicalOrder() is unsupported for this implementation");
     }
 
