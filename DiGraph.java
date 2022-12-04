@@ -95,7 +95,7 @@ public class DiGraph<T> implements GraphInterface<T> {
         originVertex.visit();
         traversalOrder.enqueue(origin); // Enqueue vertex label
         vertexQueue.enqueue(originVertex); // Enqueue vertex
-        
+
         while (!vertexQueue.isEmpty()) {
             VertexInterface<T> frontVertex = vertexQueue.dequeue();
             Iterator<VertexInterface<T>> neighbors = frontVertex.getNeighborIterator();
@@ -112,7 +112,29 @@ public class DiGraph<T> implements GraphInterface<T> {
     }
 
     public QueueInterface<T> getDepthFirstTraversal(T origin) {
-        throw new UnsupportedOperationException("getDepthFirstTraversal() is unsupported for this implementation");
+        resetVertices();
+        QueueInterface<T> traversalOrder = new LinkedQueue<>();
+        StackInterface<VertexInterface<T>> vertexStack = new LinkedStack<>();
+        VertexInterface<T> originVertex = vertices.getValue(origin);
+
+        traversalOrder.enqueue(origin);
+        vertexStack.push(originVertex);
+
+        while (!vertexStack.isEmpty()) {
+            VertexInterface<T> frontVertex = vertexStack.pop();
+            Iterator<VertexInterface<T>> neighbors = frontVertex.getNeighborIterator();
+
+            while (neighbors.hasNext()) {
+                VertexInterface<T> nextNeighbor = neighbors.next();
+
+                if (!nextNeighbor.isVisited()) {
+                    nextNeighbor.visit();
+                    traversalOrder.enqueue(nextNeighbor.getLabel());
+                    vertexStack.push(nextNeighbor);
+                }
+            }
+        }
+        return traversalOrder;
     }
 
     public StackInterface<T> getTopologicalOrder() {
@@ -162,8 +184,7 @@ public class DiGraph<T> implements GraphInterface<T> {
     }
 
     public double getCheapestPath(T begin, T end, StackInterface<T> path) {
-
-        return 0;
+        throw new UnsupportedOperationException("getCheapestPath() is unsupported in this implementation");
     }
 
 }

@@ -11,6 +11,7 @@
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class AirportApp {
@@ -20,14 +21,13 @@ public class AirportApp {
 		DictionaryInterface<String, String[]> dict = new MapDictionary<>();
 		Scanner scan = new Scanner(System.in);
 		GraphInterface<String> graph = new DiGraph<>();
-		VertexInterface<String> vertex;
 		String[] command;
 		printMenu();
 
 		do {
 			System.out.println();
-			System.out.println("Command? ");
-			command = scan.nextLine().split(" ");
+			System.out.print("Command? ");
+			command = scan.nextLine().trim().toUpperCase().split(" ");
 
 			switch (command[0]) {
 				case "E":
@@ -56,46 +56,71 @@ public class AirportApp {
 					// Query Airport Information: Uses Map to get O(1) access
 				case "Q":
 					for (int i = 1; i < command.length; i++) {
-						System.out.print(command[i] + " - ");
-
 						if (dict.getValue(command[i]) == null) {
 							System.out.println("Airport code unknown");
 							continue;
 						} else {
-							String[] value = dict.getValue(command[i]);
-							for (int j = 1; j < value.length; j++) {
-								System.out.print(value[j] + " ");
-							}
+							System.out.print(command[i] + " - ");
+							String airport = Arrays.toString(dict.getValue(command[i]));
+							System.out.println(airport.substring(6, airport.length()-1));
 						}
-						System.out.println();
 					}
 					break;
 				case "D":
-					if (!(dict.getValue(command[1]) == null) && !(dict.getValue(command[2]) == null)) {
-						StackInterface<String> stack = new LinkedStack<>();
-						int pathLength = graph.getShortestPath(command[1], command[2], stack);
+					try {
+						if (!(dict.getValue(command[1]) == null) && !(dict.getValue(command[2]) == null)) {
+							StackInterface<String> stack = new LinkedStack<>();
+							int pathLength = graph.getShortestPath(command[1], command[2], stack);
 
-						if (pathLength == 0) {
-							System.out.println("Airports not connected");
-						} else {
-							String value = stack.pop();
-							graph.getDepthFirstTraversal(value);
+							if (pathLength == 0) {
+								System.out.println("Airports not connected");
+							} else {
 
-							System.out.println(dict.getValue(command[1]) + " to " + dict.getValue(command[2]) + " is "
-									+ dict.getValue(value) + " through the route:");
+								String airport1 = Arrays.toString(dict.getValue(command[1]));
+								String airport2 = Arrays.toString(dict.getValue(command[2]));
+								System.out.println(airport1.substring(6, airport1.length()-1) + " to " + airport2.substring(6, airport2.length()-1) + " is " + " through the route:");
 
-							while (!stack.isEmpty()) {
-								String[] origin = dict.getValue(value);
-								System.out.print(origin[0] + " - ");
-								for (int j = 1; j < origin.length; j++)
-									System.out.print(origin[j] + " ");
-								System.out.println();
-								value = stack.pop();
+								String value = stack.pop();
+								while (!stack.isEmpty()) {
+									String[] origin = dict.getValue(value);
+									System.out.print(origin[0] + " - ");
+									for (int j = 1; j < origin.length; j++)
+										System.out.print(origin[j] + " ");
+									System.out.println();
+									value = stack.pop();
+								}
 							}
-						}
 
-					} else
-						System.out.println("Airport code unknown");
+						} else
+							System.out.println("Airport code unknown");
+						break;
+					} catch (ArrayIndexOutOfBoundsException ae) {
+						ae.printStackTrace();
+					}
+				case "I":
+					double dist;
+					try {
+						dist = Double.parseDouble(command[3]);
+					} catch (ArrayIndexOutOfBoundsException ae) {
+						dist = 0;
+					}
+					if (dist >= 0 && dict.getValue(command[1]) != null && dict.getValue(command[2]) != null) {
+						// Returns true if there isnt already a connection
+						boolean result = graph.addEdge(command[1], command[2], dist);
+
+						if (result == true) {
+							String airport1 = Arrays.toString(dict.getValue(command[1]));
+							String airport2 = Arrays.toString(dict.getValue(command[2]));
+							System.out.println(airport1.substring(6, airport1.length()-1) + " to " + airport2.substring(6, airport2.length()-1) + " with a distance of " + dist + " added.");
+						} else
+							System.out.println("The connection already exist.");
+					} else {
+						System.out.println("Unknown Airport Code");
+					}
+
+					break;
+
+				case "R":
 
 					break;
 				default:
@@ -116,6 +141,8 @@ public class AirportApp {
 		System.out.println("H Read data file");
 		System.out.println("Q Query the airport information by entering the airport code.");
 		System.out.println("D Find the minimum distance between two airports.");
+		System.out.println("I Insert a connection between two airports.");
+		System.out.println("R Delete a connection between two airports");
 		System.out.println("E Exit.");
 	}
 }
