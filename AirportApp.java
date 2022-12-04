@@ -12,6 +12,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.Scanner;
 
 public class AirportApp {
@@ -53,8 +54,8 @@ public class AirportApp {
 					} catch (FileNotFoundException fe) {
 						fe.printStackTrace();
 					}
-					// Query Airport Information: Uses Map to get O(1) access
 				case "Q":
+					// Query Airport Information: Uses Map to get O(1) access
 					for (int i = 1; i < command.length; i++) {
 						if (dict.getValue(command[i]) == null) {
 							System.out.println("Airport code unknown");
@@ -62,11 +63,12 @@ public class AirportApp {
 						} else {
 							System.out.print(command[i] + " - ");
 							String airport = Arrays.toString(dict.getValue(command[i]));
-							System.out.println(airport.substring(6, airport.length()-1));
+							System.out.println(airport.substring(6, airport.length() - 1));
 						}
 					}
 					break;
 				case "D":
+					// Outputs the shortest distance between two airports
 					try {
 						if (!(dict.getValue(command[1]) == null) && !(dict.getValue(command[2]) == null)) {
 							StackInterface<String> stack = new LinkedStack<>();
@@ -76,18 +78,32 @@ public class AirportApp {
 								System.out.println("Airports not connected");
 							} else {
 
+								// Logic here is WIP. Loop through to find all the matching vertices and get the weight from 
+								// each to get total weight for output
+								// VertexInterface<String> vertex = new Vertex<>(null);
+								// Iterator<Double> weightIterator = vertex.getWeightIterator();
+								// double totalCost = 0.0;
+								// while (weightIterator.hasNext()) {
+								// 	Double weight = weightIterator.next();
+								// 	if (weight.getWeight().equals(command[1])
+								// 			|| weight.getLabel().equals(command[2])) {
+								// 		totalCost += weight.getCost();
+								// 	}
+								// }
+								// System.out.println(totalCost);
 								String airport1 = Arrays.toString(dict.getValue(command[1]));
 								String airport2 = Arrays.toString(dict.getValue(command[2]));
-								System.out.println(airport1.substring(6, airport1.length()-1) + " to " + airport2.substring(6, airport2.length()-1) + " is " + " through the route:");
+								System.out.println(airport1.substring(6, airport1.length() - 1) + " to "
+										+ airport2.substring(6, airport2.length() - 1) + " is "
+										+ " through the route:");
 
-								String value = stack.pop();
 								while (!stack.isEmpty()) {
+									String value = stack.pop();
 									String[] origin = dict.getValue(value);
 									System.out.print(origin[0] + " - ");
 									for (int j = 1; j < origin.length; j++)
 										System.out.print(origin[j] + " ");
 									System.out.println();
-									value = stack.pop();
 								}
 							}
 
@@ -99,11 +115,13 @@ public class AirportApp {
 					}
 				case "I":
 					double dist;
+					// Test to see if theres an input for distance and if its a number
 					try {
 						dist = Double.parseDouble(command[3]);
 					} catch (ArrayIndexOutOfBoundsException ae) {
 						dist = 0;
 					}
+
 					if (dist >= 0 && dict.getValue(command[1]) != null && dict.getValue(command[2]) != null) {
 						// Returns true if there isnt already a connection
 						boolean result = graph.addEdge(command[1], command[2], dist);
@@ -111,7 +129,9 @@ public class AirportApp {
 						if (result == true) {
 							String airport1 = Arrays.toString(dict.getValue(command[1]));
 							String airport2 = Arrays.toString(dict.getValue(command[2]));
-							System.out.println(airport1.substring(6, airport1.length()-1) + " to " + airport2.substring(6, airport2.length()-1) + " with a distance of " + dist + " added.");
+							System.out.println(airport1.substring(6, airport1.length() - 1) + " to "
+									+ airport2.substring(6, airport2.length() - 1) + " with a distance of " + dist
+									+ " added.");
 						} else
 							System.out.println("The connection already exist.");
 					} else {
@@ -120,6 +140,7 @@ public class AirportApp {
 
 					break;
 
+				// TODO Implement Remove Command
 				case "R":
 
 					break;

@@ -5,8 +5,8 @@
 //  Course:		cs-2400-02-f22 
 // 
 //  Description: 
-//
-//
+//      Interface for Vertex
+//      contains all the needed methods
 // 
 
 import java.util.Iterator;
