@@ -1,11 +1,23 @@
+// 
+//  Name:		Pham, Vinh 
+//  Project:	5
+//  Due:		9 December 2022 
+//  Course:		cs-2400-02-f22 
+// 
+//  Description: 
+//
+//
+// 
+
+
 import java.util.Iterator;
 
 // Why cant i just do implements BasicGraphInterface<T>, GraphAlgorithmsInterface<T>
-public class DirectedGraph<T> implements GraphInterface<T> {
+public class DiGraph<T> implements GraphInterface<T> {
     private DictionaryInterface<T, VertexInterface<T>> vertices;
     private int edgeCount;
 
-    public DirectedGraph() {
+    public DiGraph() {
         vertices = new MapDictionary<>();
         edgeCount = 0;
     }
@@ -117,6 +129,7 @@ public class DirectedGraph<T> implements GraphInterface<T> {
         }
 
         // Traversal ends; construct shortest path
+        // Assuming the Label Exist
         int pathLength = (int)endVert.getCost();
         path.push(endVert.getLabel());
         VertexInterface<T> vertex = endVert;

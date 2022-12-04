@@ -1,3 +1,14 @@
+// 
+//  Name:		Pham, Vinh 
+//  Project:	5
+//  Due:		9 December 2022 
+//  Course:		cs-2400-02-f22 
+// 
+//  Description: 
+//
+//
+// 
+
 import java.util.Iterator;
 import java.util.LinkedList;
 public class LinkedListWithIterator<T> implements ListWithIteratorInterface<T> {
