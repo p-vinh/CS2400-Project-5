@@ -9,7 +9,6 @@
 //
 // 
 
-
 import java.util.Iterator;
 
 // Why cant i just do implements BasicGraphInterface<T>, GraphAlgorithmsInterface<T>
@@ -89,7 +88,27 @@ public class DiGraph<T> implements GraphInterface<T> {
     }
 
     public QueueInterface<T> getBreadthFirstTraversal(T origin) {
-        throw new UnsupportedOperationException("getBreadthFirstTraversal() is unsupported for this implementation");
+        resetVertices();
+        QueueInterface<T> traversalOrder = new LinkedQueue<>();
+        QueueInterface<VertexInterface<T>> vertexQueue = new LinkedQueue<>();
+        VertexInterface<T> originVertex = vertices.getValue(origin);
+        originVertex.visit();
+        traversalOrder.enqueue(origin); // Enqueue vertex label
+        vertexQueue.enqueue(originVertex); // Enqueue vertex
+        
+        while (!vertexQueue.isEmpty()) {
+            VertexInterface<T> frontVertex = vertexQueue.dequeue();
+            Iterator<VertexInterface<T>> neighbors = frontVertex.getNeighborIterator();
+            while (neighbors.hasNext()) {
+                VertexInterface<T> nextNeighbor = neighbors.next();
+                if (!nextNeighbor.isVisited()) {
+                    nextNeighbor.visit();
+                    traversalOrder.enqueue(nextNeighbor.getLabel());
+                    vertexQueue.enqueue(nextNeighbor);
+                }
+            }
+        }
+        return traversalOrder;
     }
 
     public QueueInterface<T> getDepthFirstTraversal(T origin) {
@@ -110,7 +129,7 @@ public class DiGraph<T> implements GraphInterface<T> {
         orginVert.visit();
         vertexQueue.enqueue(orginVert);
 
-        while(!done && !vertexQueue.isEmpty()) {
+        while (!done && !vertexQueue.isEmpty()) {
             VertexInterface<T> frontVertex = vertexQueue.dequeue();
             Iterator<VertexInterface<T>> neighborIterator = frontVertex.getNeighborIterator();
             while (!done && neighborIterator.hasNext()) {
@@ -130,7 +149,7 @@ public class DiGraph<T> implements GraphInterface<T> {
 
         // Traversal ends; construct shortest path
         // Assuming the Label Exist
-        int pathLength = (int)endVert.getCost();
+        int pathLength = (int) endVert.getCost();
         path.push(endVert.getLabel());
         VertexInterface<T> vertex = endVert;
 

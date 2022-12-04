@@ -20,6 +20,7 @@ public class AirportApp {
 		DictionaryInterface<String, String[]> dict = new MapDictionary<>();
 		Scanner scan = new Scanner(System.in);
 		GraphInterface<String> graph = new DiGraph<>();
+		VertexInterface<String> vertex;
 		String[] command;
 		printMenu();
 
@@ -52,7 +53,7 @@ public class AirportApp {
 					} catch (FileNotFoundException fe) {
 						fe.printStackTrace();
 					}
-				// Query Airport Information: Uses Map to get O(1) access
+					// Query Airport Information: Uses Map to get O(1) access
 				case "Q":
 					for (int i = 1; i < command.length; i++) {
 						System.out.print(command[i] + " - ");
@@ -76,14 +77,22 @@ public class AirportApp {
 
 						if (pathLength == 0) {
 							System.out.println("Airports not connected");
-						} else
+						} else {
+							String value = stack.pop();
+							graph.getDepthFirstTraversal(value);
+
+							System.out.println(dict.getValue(command[1]) + " to " + dict.getValue(command[2]) + " is "
+									+ dict.getValue(value) + " through the route:");
+
 							while (!stack.isEmpty()) {
-								String[] value = dict.getValue(stack.pop());
-								System.out.print(value[0] + " - ");
-								for (int j = 1; j < value.length; j++)
-									System.out.print(value[j] + " ");
+								String[] origin = dict.getValue(value);
+								System.out.print(origin[0] + " - ");
+								for (int j = 1; j < origin.length; j++)
+									System.out.print(origin[j] + " ");
 								System.out.println();
+								value = stack.pop();
 							}
+						}
 
 					} else
 						System.out.println("Airport code unknown");
@@ -94,6 +103,7 @@ public class AirportApp {
 					System.out.println("Invalid Command");
 					System.out.println();
 					printMenu();
+					break;
 			}
 		} while (!command[0].equals("E"));
 
