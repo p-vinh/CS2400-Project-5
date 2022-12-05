@@ -11,59 +11,59 @@
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Arrays;
-import java.util.Iterator;
 import java.util.Scanner;
 
 public class AirportApp {
 
 	public static void main(String[] args) {
 		// Objects
-		DictionaryInterface<String, String[]> dict = new MapDictionary<>();
 		Scanner scan = new Scanner(System.in);
+		DictionaryInterface<String, AirportInfo> dict = new MapDictionary<>();
 		GraphInterface<String> graph = new DiGraph<>();
 		String[] command;
-		printMenu();
+
+		try {
+			// Change readAirport to ArrayList and convert to adjacency matrix
+			Scanner readAirport = new Scanner(new File("./airports.csv"));
+			Scanner readDist = new Scanner(new File("./distances.csv"));
+
+			while (readAirport.hasNextLine()) {
+				AirportInfo airport = new AirportInfo(readAirport.nextLine());
+				dict.add(airport.getIata(), airport);
+				graph.addVertex(airport.getIata());
+			}
+
+			while (readDist.hasNextLine()) {
+				String[] temp = readDist.nextLine().split(",");
+				graph.addEdge(temp[0], temp[1], Double.parseDouble(temp[2]));
+			}
+		} catch (FileNotFoundException fe) {
+			fe.printStackTrace();
+		}
 
 		do {
 			System.out.println();
 			System.out.print("Command? ");
-			command = scan.nextLine().trim().toUpperCase().split(" ");
+			command = scan.nextLine().toUpperCase().split(" ");
 
 			switch (command[0]) {
 				case "E":
 					break;
-				// Reads in airport information to map and distance into a directed graph
+				// Prints Menu
 				case "H":
-					String[] temp;
-					try {
-						Scanner readAirport = new Scanner(new File("./airports.csv"));
-						Scanner readDist = new Scanner(new File("./distances.csv"));
+					printMenu();
 
-						while (readAirport.hasNextLine()) {
-							temp = readAirport.nextLine().split(",");
-							dict.add(temp[0], temp);
-							graph.addVertex(temp[0]);
-						}
-
-						while (readDist.hasNextLine()) {
-							temp = readDist.nextLine().split(",");
-							graph.addEdge(temp[0], temp[1], Double.parseDouble(temp[2]));
-						}
-						break;
-					} catch (FileNotFoundException fe) {
-						fe.printStackTrace();
-					}
 				case "Q":
 					// Query Airport Information: Uses Map to get O(1) access
+
 					for (int i = 1; i < command.length; i++) {
 						if (dict.getValue(command[i]) == null) {
 							System.out.println("Airport code unknown");
 							continue;
 						} else {
 							System.out.print(command[i] + " - ");
-							String airport = Arrays.toString(dict.getValue(command[i]));
-							System.out.println(airport.substring(6, airport.length() - 1));
+							AirportInfo airport = dict.getValue(command[i]);
+							System.out.println(airport.toString());
 						}
 					}
 					break;
@@ -72,38 +72,36 @@ public class AirportApp {
 					try {
 						if (!(dict.getValue(command[1]) == null) && !(dict.getValue(command[2]) == null)) {
 							StackInterface<String> stack = new LinkedStack<>();
-							int pathLength = graph.getShortestPath(command[1], command[2], stack);
+
+							// Change to getCheapestPath()
+							double pathLength = graph.getShortestPath(command[1], command[2], stack);
 
 							if (pathLength == 0) {
 								System.out.println("Airports not connected");
 							} else {
 
-								// Logic here is WIP. Loop through to find all the matching vertices and get the weight from 
+								// Logic here is WIP. Loop through to find all the matching vertices and get the
+								// weight from
 								// each to get total weight for output
 								// VertexInterface<String> vertex = new Vertex<>(null);
 								// Iterator<Double> weightIterator = vertex.getWeightIterator();
 								// double totalCost = 0.0;
 								// while (weightIterator.hasNext()) {
-								// 	Double weight = weightIterator.next();
-								// 	if (weight.getWeight().equals(command[1])
-								// 			|| weight.getLabel().equals(command[2])) {
-								// 		totalCost += weight.getCost();
-								// 	}
+								// Double weight = weightIterator.next();
+								// if (weight.getWeight().equals(command[1])
+								// || weight.getLabel().equals(command[2])) {
+								// totalCost += weight.getCost();
+								// }
 								// }
 								// System.out.println(totalCost);
-								String airport1 = Arrays.toString(dict.getValue(command[1]));
-								String airport2 = Arrays.toString(dict.getValue(command[2]));
-								System.out.println(airport1.substring(6, airport1.length() - 1) + " to "
-										+ airport2.substring(6, airport2.length() - 1) + " is "
+
+								System.out.println(dict.getValue(command[1]).toString() + " to "
+										+ dict.getValue(command[2]).toString() + " is " + pathLength
 										+ " through the route:");
 
 								while (!stack.isEmpty()) {
-									String value = stack.pop();
-									String[] origin = dict.getValue(value);
-									System.out.print(origin[0] + " - ");
-									for (int j = 1; j < origin.length; j++)
-										System.out.print(origin[j] + " ");
-									System.out.println();
+									AirportInfo origin = dict.getValue(stack.pop());
+									System.out.println(origin.getIata() + " - " + origin.toString());
 								}
 							}
 
@@ -127,11 +125,9 @@ public class AirportApp {
 						boolean result = graph.addEdge(command[1], command[2], dist);
 
 						if (result == true) {
-							String airport1 = Arrays.toString(dict.getValue(command[1]));
-							String airport2 = Arrays.toString(dict.getValue(command[2]));
-							System.out.println(airport1.substring(6, airport1.length() - 1) + " to "
-									+ airport2.substring(6, airport2.length() - 1) + " with a distance of " + dist
-									+ " added.");
+							System.out.println(
+									dict.getValue(command[1]).toString() + " to " + dict.getValue(command[2]).toString()
+											+ " with a distance of " + dist + " added.");
 						} else
 							System.out.println("The connection already exist.");
 					} else {
@@ -159,7 +155,7 @@ public class AirportApp {
 
 	private static void printMenu() {
 		System.out.println("Airports v0.1 by F. Last\n");
-		System.out.println("H Read data file");
+		System.out.println("H Print Menu");
 		System.out.println("Q Query the airport information by entering the airport code.");
 		System.out.println("D Find the minimum distance between two airports.");
 		System.out.println("I Insert a connection between two airports.");

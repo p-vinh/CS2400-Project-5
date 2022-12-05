@@ -142,7 +142,7 @@ public class Vertex<T> implements VertexInterface<T> {
         }
 
         protected double getWeight() {
-            return weight;
+            return cost + weight;
         }
     }
 

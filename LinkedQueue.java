@@ -24,7 +24,7 @@ public class LinkedQueue<T> implements QueueInterface<T> {
     }
 
     public T dequeue() {
-        return queue.poll();
+        return queue.remove();
     }
 
     public T getFront() {
