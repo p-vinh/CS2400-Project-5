@@ -10,6 +10,7 @@
 // 
 
 import java.util.Iterator;
+import java.util.PriorityQueue;
 
 public class DiGraph<T> implements GraphInterface<T> {
 	private DictionaryInterface<T, VertexInterface<T>> vertices;
@@ -184,7 +185,98 @@ public class DiGraph<T> implements GraphInterface<T> {
 
 	public double getCheapestPath(T begin, T end, StackInterface<T> path) {
 		resetVertices();
-		return 0.0;
+		boolean done = false;
+		PriorityQueue<EntryPQ> priorityQueue = new PriorityQueue<>();
+		VertexInterface<T> originVertex = vertices.getValue(begin);
+		VertexInterface<T> endVertex = vertices.getValue(end);
+
+		priorityQueue.add(new EntryPQ(originVertex, 0, null));
+
+		while (!done && !priorityQueue.isEmpty()) {
+			EntryPQ frontEntry = priorityQueue.remove();
+			VertexInterface<T> frontVertex = frontEntry.getVertex();
+
+			if (!frontVertex.isVisited()) {
+				frontVertex.visit();
+				frontVertex.setCost(frontEntry.getCost());
+				frontVertex.setPredecessor(frontEntry.getPredecessor());
+
+				if (frontVertex.equals(endVertex))
+					done = true;
+				else {
+					Iterator<VertexInterface<T>> neighbor = frontVertex.getNeighborIterator();
+					Iterator<Double> weightIterator = frontVertex.getWeightIterator();
+					
+					while (neighbor.hasNext()) {
+						VertexInterface<T> nextNeighbor = neighbor.next();
+						double weightOfEdgeToNeighbor = weightIterator.next();
+
+						if (!nextNeighbor.isVisited()) {
+							double nextCost = weightOfEdgeToNeighbor + frontVertex.getCost();
+							priorityQueue.add(new EntryPQ(nextNeighbor, nextCost, frontVertex));
+						}
+					}
+				}
+			}
+		}
+
+		// Traversal ends; construct cheapest path
+		double pathCost = endVertex.getCost();
+		path.push(endVertex.getLabel());
+		VertexInterface<T> vertex = endVertex;
+
+		while (vertex.hasPredecessor()) {
+			vertex = vertex.getPredecessor();
+			path.push(vertex.getLabel());
+		}
+
+		return pathCost;
+	}
+
+	public class EntryPQ implements Comparable<EntryPQ> {
+		private VertexInterface<T> vertex;
+		private double cost;
+		private VertexInterface<T> predecessor;
+
+		public EntryPQ(VertexInterface<T> origin, double cost, VertexInterface<T> predecessor) {
+			vertex = origin;
+			this.cost = cost;
+			this.predecessor = predecessor;
+		}
+
+		public VertexInterface<T> getVertex() {
+			return vertex;
+		}
+
+		public void setVertex(VertexInterface<T> vertex) {
+			this.vertex = vertex;
+		}
+
+		public double getCost() {
+			return cost;
+		}
+
+		public void setCost(double cost) {
+			this.cost = cost;
+		}
+
+		public VertexInterface<T> getPredecessor() {
+			return predecessor;
+		}
+
+		public void setPredecessor(VertexInterface<T> predecessor) {
+			this.predecessor = predecessor;
+		}
+
+		@Override
+		public int compareTo(EntryPQ o) {
+			if (cost < o.getCost())
+				return -1;
+			else if (cost > o.getCost())
+				return 1;
+
+			return 0;
+		}
+
 	}
 }
-                                                                                                                                                                                       

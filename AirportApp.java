@@ -73,28 +73,11 @@ public class AirportApp {
 						if (!(dict.getValue(command[1]) == null) && !(dict.getValue(command[2]) == null)) {
 							StackInterface<String> stack = new LinkedStack<>();
 
-							// Change to getCheapestPath()
-							double pathLength = graph.getShortestPath(command[1], command[2], stack);
+							double pathLength = graph.getCheapestPath(command[1], command[2], stack);
 
 							if (pathLength == 0) {
 								System.out.println("Airports not connected");
 							} else {
-
-								// Logic here is WIP. Loop through to find all the matching vertices and get the
-								// weight from
-								// each to get total weight for output
-								// VertexInterface<String> vertex = new Vertex<>(null);
-								// Iterator<Double> weightIterator = vertex.getWeightIterator();
-								// double totalCost = 0.0;
-								// while (weightIterator.hasNext()) {
-								// Double weight = weightIterator.next();
-								// if (weight.getWeight().equals(command[1])
-								// || weight.getLabel().equals(command[2])) {
-								// totalCost += weight.getCost();
-								// }
-								// }
-								// System.out.println(totalCost);
-
 								System.out.println(dict.getValue(command[1]).toString() + " to "
 										+ dict.getValue(command[2]).toString() + " is " + pathLength
 										+ " through the route:");
@@ -154,7 +137,7 @@ public class AirportApp {
 	}
 
 	private static void printMenu() {
-		System.out.println("Airports v0.1 by F. Last\n");
+		System.out.println("Airports v0.1 by V. Pham\n");
 		System.out.println("H Print Menu");
 		System.out.println("Q Query the airport information by entering the airport code.");
 		System.out.println("D Find the minimum distance between two airports.");
