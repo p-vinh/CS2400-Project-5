@@ -206,7 +206,6 @@ public class DiGraph<T> implements GraphInterface<T> {
 				else {
 					Iterator<VertexInterface<T>> neighbor = frontVertex.getNeighborIterator();
 					Iterator<Double> weightIterator = frontVertex.getWeightIterator();
-					
 					while (neighbor.hasNext()) {
 						VertexInterface<T> nextNeighbor = neighbor.next();
 						double weightOfEdgeToNeighbor = weightIterator.next();
