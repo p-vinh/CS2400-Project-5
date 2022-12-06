@@ -5,9 +5,8 @@
 //  Course:		cs-2400-02-f22 
 // 
 //  Description: 
+//      Contains necessary methods for a dictionary
 //
-//
-// 
 
 import java.util.Iterator;
 public interface DictionaryInterface<K, V> {

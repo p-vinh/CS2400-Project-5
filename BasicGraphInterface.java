@@ -5,9 +5,8 @@
 //  Course:		cs-2400-02-f22 
 // 
 //  Description: 
+//      Contains necessary methods for a graph
 //
-//
-// 
 
 /**
  * An interface of methods providing basic operations for directed

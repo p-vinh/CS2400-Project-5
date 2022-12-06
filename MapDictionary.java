@@ -6,7 +6,7 @@
 // 
 //  Description: 
 //
-//
+//		Implementation of dictionary using java's map library
 // 
 
 import java.util.HashMap;

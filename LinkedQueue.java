@@ -5,7 +5,7 @@
 //  Course:		cs-2400-02-f22 
 // 
 //  Description: 
-//
+//      Implementation of queue using java's queue library and queue interface
 //
 // 
 

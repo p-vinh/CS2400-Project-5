@@ -5,7 +5,7 @@
 //  Course:		cs-2400-02-f22 
 // 
 //  Description: 
-//
+//      Interface for a list with iterator
 //
 // 
 

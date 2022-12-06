@@ -5,9 +5,9 @@
 //  Course:		cs-2400-02-f22 
 // 
 //  Description: 
+//		Implementation of a directional graph that uses a protected 
+//	edge class for weighted and unweighted. Implements graph intereface.
 //
-//
-// 
 
 import java.util.Iterator;
 import java.util.PriorityQueue;

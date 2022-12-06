@@ -5,7 +5,8 @@
 //  Course:		cs-2400-02-f22 
 // 
 //  Description: 
-//
+//      Implementation of a linked list iwth an iterator.
+//      Uses java's iterator and linked list libraries.
 //
 // 
 

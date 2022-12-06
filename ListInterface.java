@@ -5,8 +5,8 @@
 //  Course:		cs-2400-02-f22 
 // 
 //  Description: 
-//
-//
+//      List Interface contains all the list methods
+//  
 // 
 
 public interface ListInterface<T> {

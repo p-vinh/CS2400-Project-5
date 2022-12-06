@@ -5,9 +5,10 @@
 //  Course:		cs-2400-02-f22 
 // 
 //  Description: 
-//
-//
-// 
+//		Implementation of vertex contains a protected edge class that contains 
+//		a private weight data field. Useful for directed and undirected graphs.
+//		
+
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;

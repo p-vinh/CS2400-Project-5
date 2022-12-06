@@ -1,3 +1,14 @@
+// 
+//  Name:		Pham, Vinh 
+//  Project:	5
+//  Due:		9 December 2022 
+//  Course:		cs-2400-02-f22 
+// 
+//  Description: 
+//		Basic class for the airport information 
+//
+// 
+
 public class AirportInfo {
 	private String iata;
 	private String city;
@@ -56,7 +67,7 @@ public class AirportInfo {
 
 	@Override
 	public String toString() {
-		return getCity() + " " + getAirportName() + " " + getState();
+		return city + " " + airportName + " " + state;
 	}
 
 

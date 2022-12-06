@@ -5,9 +5,8 @@
 //  Course:		cs-2400-02-f22 
 // 
 //  Description: 
+//      Queue Interface - contains necessary methods for queue.
 //
-//
-// 
 
 public interface QueueInterface<T> {
     /**

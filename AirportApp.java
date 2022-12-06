@@ -11,6 +11,7 @@
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Iterator;
 import java.util.Scanner;
 
 public class AirportApp {
@@ -118,11 +119,6 @@ public class AirportApp {
 					}
 
 					break;
-
-				// TODO Implement Remove Command
-				case "R":
-
-					break;
 				default:
 					System.out.println();
 					System.out.println("Invalid Command");
@@ -142,7 +138,6 @@ public class AirportApp {
 		System.out.println("Q Query the airport information by entering the airport code.");
 		System.out.println("D Find the minimum distance between two airports.");
 		System.out.println("I Insert a connection between two airports.");
-		System.out.println("R Delete a connection between two airports");
 		System.out.println("E Exit.");
 	}
 }

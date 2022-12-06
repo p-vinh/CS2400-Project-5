@@ -5,9 +5,8 @@
 //  Course:		cs-2400-02-f22 
 // 
 //  Description: 
+//      Contains all the alogrithms of a graph
 //
-//
-// 
 
 public interface GraphAlgorithmsInterface<T> {
     /**
