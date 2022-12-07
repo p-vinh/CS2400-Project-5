@@ -11,7 +11,6 @@
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Iterator;
 import java.util.Scanner;
 
 public class AirportApp {
@@ -101,23 +100,27 @@ public class AirportApp {
 					try {
 						dist = Double.parseDouble(command[3]);
 					} catch (ArrayIndexOutOfBoundsException ae) {
-						dist = 0;
+						dist = -1;
+					} catch (NumberFormatException ne) {
+						dist = -1;
 					}
 
-					if (dist >= 0 && dict.getValue(command[1]) != null && dict.getValue(command[2]) != null) {
-						// Returns true if there isnt already a connection
-						boolean result = graph.addEdge(command[1], command[2], dist);
+					if (dist > 0) {
+						if (dict.getValue(command[1]) != null && dict.getValue(command[2]) != null) {
+							// Returns true if there isnt already a connection
+							boolean result = graph.addEdge(command[1], command[2], dist);
 
-						if (result == true) {
-							System.out.println(
-									dict.getValue(command[1]).toString() + " to " + dict.getValue(command[2]).toString()
-											+ " with a distance of " + dist + " added.");
+							if (result == true) {
+								System.out.println(
+										dict.getValue(command[1]).toString() + " to "
+												+ dict.getValue(command[2]).toString()
+												+ " with a distance of " + dist + " added.");
+							} else
+								System.out.println("The connection already exist.");
 						} else
-							System.out.println("The connection already exist.");
-					} else {
-						System.out.println("Unknown Airport Code");
-					}
-
+							System.out.println("Unknown Airport Code");
+					} else
+						System.out.println("Insertion failed. Distance is less than 0.");
 					break;
 				default:
 					System.out.println();
