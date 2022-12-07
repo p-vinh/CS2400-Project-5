@@ -22,6 +22,8 @@ public class AirportApp {
 		GraphInterface<String> graph = new DiGraph<>();
 		String[] command;
 
+		System.out.println("Airports v0.1 by V. Pham\n");
+
 		try {
 			// Change readAirport to ArrayList and convert to adjacency matrix
 			Scanner readAirport = new Scanner(new File("./airports.csv"));
@@ -38,6 +40,7 @@ public class AirportApp {
 				graph.addEdge(temp[0], temp[1], Double.parseDouble(temp[2]));
 			}
 		} catch (FileNotFoundException fe) {
+			System.out.println("File could not be read.");
 			fe.printStackTrace();
 		}
 
@@ -136,7 +139,6 @@ public class AirportApp {
 	}
 
 	private static void printMenu() {
-		System.out.println("Airports v0.1 by V. Pham\n");
 		System.out.println("H Print Menu");
 		System.out.println("Q Query the airport information by entering the airport code.");
 		System.out.println("D Find the minimum distance between two airports.");
