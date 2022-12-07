@@ -126,6 +126,11 @@ public class AirportApp {
 					} else
 						System.out.println("Insertion failed. Distance is less than 0.");
 					break;
+
+				//TODO implement remove
+				case "R":
+
+					break;
 				default:
 					System.out.println();
 					System.out.println("Invalid Command");
