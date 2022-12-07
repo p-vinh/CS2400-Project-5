@@ -56,7 +56,7 @@ public class AirportApp {
 				// Prints Menu
 				case "H":
 					printMenu();
-
+					break;
 				case "Q":
 					// Query Airport Information: Uses Map to get O(1) access
 
