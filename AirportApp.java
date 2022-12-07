@@ -5,9 +5,10 @@
 //  Course:		cs-2400-02-f22 
 // 
 //  Description: 
+//		Reads airport information from .csv files and constructs a directed graph.
+//		Outputs a menu that the user can choose from. The program can determine the
+//		cheapest path between two airports.
 //
-//
-// 
 
 import java.io.File;
 import java.io.FileNotFoundException;
