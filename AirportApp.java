@@ -127,9 +127,18 @@ public class AirportApp {
 						System.out.println("Insertion failed. Distance is less than 0.");
 					break;
 
-				//TODO implement remove
 				case "R":
-
+					if (dict.getValue(command[1]) != null && dict.getValue(command[2]) != null) {
+						if (graph.hasEdge(command[1], command[2])) {
+							boolean result = graph.addEdge(command[1], command[2]);
+							if (result == true) {
+								System.out.println("Successfully Removed");
+							}
+						} else {
+							System.out.println("Airports aren't Connected");
+						}
+					} else
+						System.out.println("Unknown Airport Code");
 					break;
 				default:
 					System.out.println();
@@ -149,6 +158,7 @@ public class AirportApp {
 		System.out.println("Q Query the airport information by entering the airport code.");
 		System.out.println("D Find the minimum distance between two airports.");
 		System.out.println("I Insert a connection between two airports.");
+		System.out.println("R Remove a connection between two airports.");
 		System.out.println("E Exit.");
 	}
 }

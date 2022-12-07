@@ -9,7 +9,6 @@
 //		a private weight data field. Useful for directed and undirected graphs.
 //		
 
-
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -73,15 +72,40 @@ public class Vertex<T> implements VertexInterface<T> {
 		if (!this.equals(endVertex)) { // Vertices are distinct
 			Iterator<VertexInterface<T>> neighbors = getNeighborIterator();
 			boolean duplicateEdge = false;
+
+			if (edgeWeight == 0) {
+				return removeEdge(endVertex);
+			}
+
 			while (!duplicateEdge && neighbors.hasNext()) {
 				VertexInterface<T> nextNeighbor = neighbors.next();
+
 				if (endVertex.equals(nextNeighbor))
 					duplicateEdge = true;
 			}
-			if (!duplicateEdge) {
+			if (!duplicateEdge && edgeWeight != 0) {
 				edgeList.add(new Edge(endVertex, edgeWeight));
 				result = true;
 			}
+		}
+		return result;
+	}
+
+	private boolean removeEdge(VertexInterface<T> endVertex) {
+		boolean result = false;
+
+		Iterator<VertexInterface<T>> neighbors = getNeighborIterator();
+		int index = 0;
+		while (neighbors.hasNext()) {
+
+			if (neighbors.next().equals(endVertex)) {
+				edgeList.remove(index);
+				endVertex.setCost(0);
+				setCost(0);
+				result = true;
+				break;
+			}
+			index++;
 		}
 		return result;
 	}
