@@ -132,7 +132,7 @@ public class AirportApp {
 						if (graph.hasEdge(command[1], command[2])) {
 							boolean result = graph.addEdge(command[1], command[2]);
 							if (result == true) {
-								System.out.println("Successfully Removed");
+								System.out.println(dict.getValue(command[1]).toString() + " and " + dict.getValue(command[2]).toString() + " removed.");
 							}
 						} else {
 							System.out.println("Airports aren't Connected");
