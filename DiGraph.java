@@ -380,12 +380,7 @@ public class DiGraph<T> implements GraphInterface<T> {
 
 		@Override
 		public int compareTo(EntryPQ o) {
-			if (cost < o.getCost())
-				return -1;
-			else if (cost > o.getCost())
-				return 1;
-
-			return 0;
+			return Double.compare(cost, o.cost);
 		}
 
 	}
